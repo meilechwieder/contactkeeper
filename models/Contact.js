@@ -10,8 +10,7 @@ const ContactSchema = mongoose.Schema({
     required: true
   },
   email: {
-    type: String,
-    required: true
+    type: String
   },
   phone: {
     type: String
@@ -26,4 +25,4 @@ const ContactSchema = mongoose.Schema({
   }
 });
 
-module.exports = mongoose.model('cons', UserSchema);
+module.exports = mongoose.model('contact', ContactSchema);
