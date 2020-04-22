@@ -1,9 +1,26 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import AuthContext from '../../context/auth/authContext';
+import AlertContext from '../../context/alert/alertContext';
 import { Link } from 'react-router-dom';
 
-const Login = () => {
-  const { registerUser } = useContext(AuthContext);
+const Login = props => {
+  const { setAlert } = useContext(AlertContext);
+  const { loginUser, error, clearError, loading, isAuthenticated } = useContext(
+    AuthContext
+  );
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      props.history.push('/');
+    }
+
+    if (error) {
+      setAlert(error, 'danger');
+      clearError();
+    }
+    // eslint-disabled-next-line
+  }, [error, isAuthenticated, props.history]);
+
   const [user, setUser] = useState({
     email: '',
     password: ''
@@ -15,8 +32,11 @@ const Login = () => {
   };
   const onSubmit = e => {
     e.preventDefault();
-    console.log('helleoeoeo');
-    //loginUser(user);
+    if (email !== '' && password !== '') {
+      loginUser(user);
+    } else {
+      setAlert('All fields are required', 'danger');
+    }
   };
   return (
     <div className='form-container'>

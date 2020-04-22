@@ -1,17 +1,36 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import AuthContext from '../../context/auth/authContext';
 import { Link } from 'react-router-dom';
 import AlertContext from '../../context/alert/alertContext';
 
-const Register = () => {
+const Register = props => {
   const { setAlert } = useContext(AlertContext);
-  const { registerUser } = useContext(AuthContext);
+  const {
+    registerUser,
+    error,
+    clearError,
+    loading,
+    isAuthenticated
+  } = useContext(AuthContext);
   const [user, setUser] = useState({
     name: '',
     email: '',
     password: '',
     password2: ''
   });
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      props.history.push('/');
+    }
+
+    if (error) {
+      setAlert(error, 'danger');
+      clearError();
+    }
+    // eslint-disabled-next-line
+  }, [error, isAuthenticated, props.history]);
+
   const { name, email, password, password2 } = user;
 
   const onChange = e => {
@@ -85,6 +104,7 @@ const Register = () => {
           type='submit'
           value='Register'
           className='btn btn-primary btn-block'
+          disabled={!loading}
         />
       </form>
     </div>

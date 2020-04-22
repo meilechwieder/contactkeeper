@@ -290,6 +290,11 @@ img {
   opacity: 0.8;
 }
 
+.btn:disabled {
+  background-color: grey;
+  cursor: not-allowed;
+}
+
 .bg-light,
 .badge-light {
   border: #ccc solid 1px;
